@@ -12,18 +12,9 @@ const userSchema = Schema(
       minlength: 6,
       required: [true, "Password is required"],
     },
-    subscription: {
-      type: String,
-      enum: ["starter", "pro", "business"],
-      default: "starter",
-    },
     token: {
       type: String,
       default: null,
-    },
-    avatarURL: {
-      type: String,
-      required: true,
     },
     verify: {
       type: Boolean,
@@ -32,6 +23,10 @@ const userSchema = Schema(
     verificationToken: {
       type: String,
       required: [true, "Verify token is required"],
+    },
+    totalBalance: {
+      type: Number,
+      default: 0,
     },
   },
   { versionKey: false, timestamps: true }

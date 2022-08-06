@@ -2,10 +2,6 @@ const express = require("express");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const Joi = require("joi");
-const gravatar = require("gravatar");
-const path = require("path");
-const fs = require("fs/promises");
-const Jimp = require("jimp");
 const { nanoid } = require("nanoid");
 
 require("dotenv").config();
@@ -14,7 +10,7 @@ const { SECRET_KEY } = process.env;
 const User = require("../../models/user");
 
 const { createError, sendMail } = require("../../helpers");
-const { authorize, upload } = require("../../middlewares");
+const { authorize } = require("../../middlewares");
 
 const router = express.Router();
 
@@ -50,13 +46,11 @@ router.post("/signup", async (req, res, next) => {
     }
 
     const hashPassword = await bcrypt.hash(password, 10);
-    const avatarURL = gravatar.url(email);
     const verificationToken = nanoid();
     const result = await User.create({
       email,
       password: hashPassword,
       name,
-      avatarURL,
       verificationToken,
     });
 
@@ -69,7 +63,6 @@ router.post("/signup", async (req, res, next) => {
 
     res.status(201).json({
       email: result.email,
-      subscription: result.subscription,
     });
   } catch (error) {
     next(error);
@@ -163,7 +156,6 @@ router.post("/login", async (req, res, next) => {
       token,
       user: {
         email: user.email,
-        subscription: user.subscription,
       },
     });
   } catch (error) {
@@ -198,44 +190,12 @@ router.get("/current", authorize, async (req, res, next) => {
 
     res.json({
       email: user.email,
-      subscription: user.subscription,
+      token: user.token,
+      totalBalance: user.totalBalance,
     });
   } catch (error) {
     next(error);
   }
 });
-
-// update user avatar
-const avatarsDir = path.join(__dirname, "../../", "public", "avatars");
-
-router.patch(
-  "/avatars",
-  authorize,
-  upload.single("avatar"),
-  async (req, res, next) => {
-    try {
-      const { _id } = req.user;
-      const { path: tempDir, originalname } = req.file;
-
-      const [extention] = originalname.split(".").reverse();
-      const newAvatar = `${_id}.${extention}`;
-      const uploadDir = path.join(avatarsDir, newAvatar);
-
-      await fs.rename(tempDir, uploadDir);
-      const avatarURL = path.join("avatars", newAvatar);
-
-      Jimp.read(uploadDir, (err, lenna) => {
-        if (err) throw err;
-        lenna.resize(250, 250).write(uploadDir);
-      });
-
-      await User.findByIdAndUpdate(_id, { avatarURL });
-      res.json({ avatarURL });
-    } catch (error) {
-      await fs.unlink(req.file.path);
-      next(error);
-    }
-  }
-);
 
 module.exports = router;
