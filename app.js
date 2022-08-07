@@ -20,7 +20,17 @@ app.use("/api/transactions", transactionsRouter);
 app.use("/api/auth", authRouter);
 
 app.use((req, res) => {
-  res.status(404).json({ message: "Not found: this middleware" });
+  res.status(404).json({ message: "Not found" });
+});
+
+app.get("/", async (req, res, next) => {
+  try {
+    res.json({
+      message: "Its working",
+    });
+  } catch (error) {
+    next(error);
+  }
 });
 
 // error handler
