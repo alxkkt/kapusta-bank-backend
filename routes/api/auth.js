@@ -2,14 +2,14 @@ const express = require("express");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const Joi = require("joi");
-const { nanoid } = require("nanoid");
+// const { nanoid } = require("nanoid");
 
 require("dotenv").config();
 const { SECRET_KEY } = process.env;
 
 const User = require("../../models/user");
 
-const { createError, sendMail } = require("../../helpers");
+const { createError } = require("../../helpers"); // add sendmail for verification
 const { authorize } = require("../../middlewares");
 
 const router = express.Router();
@@ -26,9 +26,9 @@ const userLoginSchema = Joi.object({
   password: Joi.string().min(6).required(),
 });
 
-const verifyEmailSchema = Joi.object({
-  email: Joi.string().pattern(emailRegexp).required(),
-});
+// const verifyEmailSchema = Joi.object({
+//   email: Joi.string().pattern(emailRegexp).required(),
+// });
 
 // register
 router.post("/signup", async (req, res, next) => {
@@ -46,19 +46,19 @@ router.post("/signup", async (req, res, next) => {
     }
 
     const hashPassword = await bcrypt.hash(password, 10);
-    const verificationToken = nanoid();
+    // const verificationToken = nanoid();
     const result = await User.create({
       email,
       password: hashPassword,
-      verificationToken,
+      // verificationToken,
     });
 
-    const mail = {
-      to: email,
-      subject: "Confirm your email address",
-      html: `<a target="_blank" href="https://kapusta-backend-proj.herokuapp.com/api/auth/verify/${verificationToken}">Click here to confirm your mail</a>`,
-    };
-    await sendMail(mail);
+    // const mail = {
+    //   to: email,
+    //   subject: "Confirm your email address",
+    //   html: `<a target="_blank" href="https://kapusta-backend-proj.herokuapp.com/api/auth/verify/${verificationToken}">Click here to confirm your mail</a>`,
+    // };
+    // await sendMail(mail);
 
     res.status(201).json({
       email: result.email,
@@ -68,54 +68,54 @@ router.post("/signup", async (req, res, next) => {
   }
 });
 
-// confirm user email
-router.get("/verify/:verificationToken", async (req, res, next) => {
-  try {
-    const { verificationToken } = req.params;
-    const user = await User.findOne({ verificationToken });
-    if (!user) {
-      throw createError(404);
-    }
+// // confirm user email
+// router.get("/verify/:verificationToken", async (req, res, next) => {
+//   try {
+//     const { verificationToken } = req.params;
+//     const user = await User.findOne({ verificationToken });
+//     if (!user) {
+//       throw createError(404);
+//     }
 
-    await User.findByIdAndUpdate(user._id, {
-      verificationToken: null,
-      verify: true,
-    });
-    res.json({
-      message: "Verification successful",
-    });
-  } catch (error) {
-    next(error);
-  }
-});
+//     await User.findByIdAndUpdate(user._id, {
+//       verificationToken: null,
+//       verify: true,
+//     });
+//     res.json({
+//       message: "Verification successful",
+//     });
+//   } catch (error) {
+//     next(error);
+//   }
+// });
 
-// mail double check
-router.post("/verify", async (req, res, next) => {
-  try {
-    const { error } = verifyEmailSchema.validate(req.body);
-    if (error) {
-      throw createError(400);
-    }
+// // mail double check
+// router.post("/verify", async (req, res, next) => {
+//   try {
+//     const { error } = verifyEmailSchema.validate(req.body);
+//     if (error) {
+//       throw createError(400);
+//     }
 
-    const { email } = req.body;
-    const user = await User.findOne({ email });
-    if (!user) {
-      throw createError(404);
-    }
-    if (user.verify) {
-      throw createError(400, "Verification has already been passed");
-    }
+//     const { email } = req.body;
+//     const user = await User.findOne({ email });
+//     if (!user) {
+//       throw createError(404);
+//     }
+//     if (user.verify) {
+//       throw createError(400, "Verification has already been passed");
+//     }
 
-    const mail = {
-      to: email,
-      subject: "Confirm your email address",
-      html: `<a target="_blank" href="http://localhost:3000/api/users/${user.verificationToken}">Click here to confirm your mail</a>`,
-    };
-    await sendMail(mail);
-  } catch (error) {
-    next(error);
-  }
-});
+//     const mail = {
+//       to: email,
+//       subject: "Confirm your email address",
+//       html: `<a target="_blank" href="http://localhost:3000/api/users/${user.verificationToken}">Click here to confirm your mail</a>`,
+//     };
+//     await sendMail(mail);
+//   } catch (error) {
+//     next(error);
+//   }
+// });
 
 // signin
 router.post("/login", async (req, res, next) => {
@@ -148,7 +148,7 @@ router.post("/login", async (req, res, next) => {
     const payload = {
       id: user._id,
     };
-    const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "1h" });
+    const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "72h" });
     await User.findByIdAndUpdate(user._id, { token });
 
     res.json({
