@@ -27,6 +27,10 @@ const transactionSchema = Schema(
       required: true,
       enum: ["Income", "Expense"],
     },
+    date: {
+      type: Date,
+      //
+    },
     owner: {
       type: Schema.Types.ObjectId,
       ref: "user",
