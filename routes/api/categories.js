@@ -16,14 +16,15 @@ const categorySchema = Joi.object({
 router.post("/", authorize, async (req, res, next) => {
   try {
     const { error } = categorySchema.validate(req.body);
+    const { name } = req.body;
 
     if (error) {
       throw createError(400, error.message);
     }
-    const result = await Category.create(req.body);
+    await Category.create(req.body);
 
     res.status(201).json({
-      ...result,
+      name,
     });
   } catch (error) {
     next(error);
