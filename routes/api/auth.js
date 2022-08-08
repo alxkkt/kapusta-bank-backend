@@ -56,7 +56,7 @@ router.post("/signup", async (req, res, next) => {
     const mail = {
       to: email,
       subject: "Confirm your email address",
-      html: `<a target="_blank" href="http://localhost:3000/api/auth/verify/${verificationToken}">Click here to confirm your mail</a>`,
+      html: `<a target="_blank" href="https://kapusta-backend-proj.herokuapp.com/api/auth/verify/${verificationToken}">Click here to confirm your mail</a>`,
     };
     await sendMail(mail);
 

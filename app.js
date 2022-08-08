@@ -5,7 +5,7 @@ const cors = require("cors");
 require("dotenv").config();
 
 const transactionsRouter = require("./routes/api/transactions");
-const authRouter = require("./routes/api/users");
+const authRouter = require("./routes/api/auth");
 
 const app = express();
 
@@ -21,16 +21,6 @@ app.use("/api/auth", authRouter);
 
 app.use((req, res) => {
   res.status(404).json({ message: "Not found" });
-});
-
-app.get("/", async (req, res, next) => {
-  try {
-    res.json({
-      message: "Its working",
-    });
-  } catch (error) {
-    next(error);
-  }
 });
 
 // error handler
