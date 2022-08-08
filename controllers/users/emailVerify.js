@@ -1,5 +1,7 @@
 const { User } = require("../../models/user");
 
+const { createError } = require("../../helpers");
+
 const emailVerify = async (req, res, next) => {
   const { verificationToken } = req.params;
   const user = await User.findOne({ verificationToken });
