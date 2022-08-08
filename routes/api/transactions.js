@@ -28,6 +28,8 @@ router.get("/", authorize, async (req, res, next) => {
   }
 });
 
+// get transaction by id
+
 // create new transaction
 router.post("/", authorize, async (req, res, next) => {
   try {
