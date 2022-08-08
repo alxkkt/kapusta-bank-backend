@@ -127,9 +127,9 @@ router.post("/login", async (req, res, next) => {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
 
-    if (!user.verify) {
-      throw createError(401, "Email not verified");
-    }
+    // if (!user.verify) {
+    //   throw createError(401, "Email not verified");
+    // }
 
     // if (!user) {
     //   throw createError(401, "Email wrong");
