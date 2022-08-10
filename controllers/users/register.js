@@ -24,7 +24,7 @@ const register = async (req, res, next) => {
   const mail = {
     to: email,
     subject: "Verify your account",
-    html: `<a target='_blank' href='https://kapusta-backend-proj.herokuapp.com/api/transactions${verificationToken}'>Click here to verify your account</a>`,
+    html: `<a target='_blank' href='https://kapusta-backend-proj.herokuapp.com/api/auth/verify/${verificationToken}'>Click here to verify your account</a>`,
   };
   await sendMail(mail);
   res.status(201).json(result.email);
