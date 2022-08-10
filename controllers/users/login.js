@@ -31,7 +31,7 @@ const login = async (req, res, next) => {
 
   await User.findByIdAndUpdate(user._id, { token });
 
-  res.status(200).json({
+  res.status(201).json({
     token,
     email,
     totalBalance: user.totalBalance,
