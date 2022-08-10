@@ -10,13 +10,18 @@ const login = async (req, res, next) => {
   const { email, password } = req.body;
 
   const user = await User.findOne({ email });
+  if (!user) {
+    throw createError(401, "invalid password or email");
+  }
+
   const passwordValid = await bcrypt.compare(password, user.password);
 
-  if (!passwordValid || !user) {
-    next(createError("invalid email or password ", 401));
+  if (!passwordValid) {
+    throw createError(401, "invalid password or email");
   }
+
   if (!user.verify) {
-    next(createError("Email not verified", 401));
+    throw createError(401, "Email not verified");
   }
 
   const payload = {
@@ -26,7 +31,11 @@ const login = async (req, res, next) => {
 
   await User.findByIdAndUpdate(user._id, { token });
 
-  res.status(200).json(token);
+  res.status(201).json({
+    token,
+    email,
+    totalBalance: user.totalBalance,
+  });
 };
 
 module.exports = login;

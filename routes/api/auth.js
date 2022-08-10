@@ -20,7 +20,6 @@ router.post(
 router.get("/verify/:verificationToken", ctrlWrapper(ctrl.emailVerify));
 
 // user resend verification email route
-
 router.post(
   "/verify",
   validateBody(schemas.verification),

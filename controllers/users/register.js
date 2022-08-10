@@ -9,7 +9,7 @@ const register = async (req, res, next) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
   if (user) {
-    throw createError("email in use", 409);
+    throw createError(409, "email in use");
   }
   const hash = await bcrypt.hash(password, 10);
 
@@ -27,7 +27,7 @@ const register = async (req, res, next) => {
     html: `<a target='_blank' href='https://kapusta-backend-proj.herokuapp.com/api/auth/verify/${verificationToken}'>Click here to verify your account</a>`,
   };
   await sendMail(mail);
-  res.status(201).json(result.email);
+  res.status(201).json(result.mail);
 };
 
 module.exports = register;

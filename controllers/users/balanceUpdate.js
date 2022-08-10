@@ -8,7 +8,7 @@ const balanceUpdate = async (req, res, next) => {
     new: true,
   });
   if (!result) {
-    next(createError("User not found", 404));
+    next(createError(404, "User not found"));
   }
   res.json({ massage: "balance is updated", balanceNow: result.totalBalance });
 };
