@@ -12,16 +12,17 @@ const transactionSchema = Joi.object({
   category: Joi.string().required(),
   sum: Joi.number().required(),
   type: Joi.string().required(),
+  date: Joi.date().required(),
 });
 
 // get all transactions
 router.get("/", authorize, async (req, res, next) => {
   try {
     const { _id: owner } = req.user;
-    const result = await Transaction.findOne(
+    const result = await Transaction.find(
       { owner },
       "-createdAt -updatedAt"
-    ).populate("owner");
+    ).populate("owner", "_id, email");
     res.json(result);
   } catch (error) {
     next(error);

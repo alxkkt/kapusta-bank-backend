@@ -13,7 +13,7 @@ const emailVerify = async (req, res, next) => {
     verify: true,
   });
 
-  res, status(200).json({ message: "User verified" });
+  res.json({ message: "User verified" });
 };
 
 module.exports = emailVerify;

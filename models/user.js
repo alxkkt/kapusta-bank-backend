@@ -20,14 +20,15 @@ const userSchema = Schema(
       type: String,
       default: null,
     },
-    // verify: {
-    //   type: Boolean,
-    //   default: false,
-    // },
-    // verificationToken: {
-    //   type: String,
-    //   required: [true, "Verify token is required"],
-    // },
+    // required for email verify //! PLZ do not comment this field {*}
+    verify: {
+      type: Boolean,
+      default: false,
+    },
+    verificationToken: {
+      type: String,
+      required: [true, "Verify token is required"],
+    },
     totalBalance: {
       type: Number,
       default: 0,
