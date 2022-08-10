@@ -45,4 +45,6 @@ router.patch(
   ctrlWrapper(ctrl.balanceUpdate)
 );
 
+router.get("/balance", authorize, ctrlWrapper(ctrl.balanceGet));
+
 module.exports = router;
