@@ -2,6 +2,10 @@ const { Schema, model } = require("mongoose");
 
 const transactionSchema = Schema(
   {
+    description: {
+      type: String,
+      required: true,
+    },
     category: {
       type: String,
       required: true,

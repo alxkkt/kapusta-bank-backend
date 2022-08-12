@@ -9,6 +9,7 @@ const { createError } = require("../../helpers");
 const { authorize } = require("../../middlewares");
 
 const transactionSchema = Joi.object({
+  description: Joi.string().required(),
   category: Joi.string().required(),
   sum: Joi.number().required(),
   type: Joi.string().required(),
