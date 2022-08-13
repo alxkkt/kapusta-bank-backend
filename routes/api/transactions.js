@@ -4,6 +4,7 @@ const Joi = require("joi");
 const router = express.Router();
 
 const Transaction = require("../../models/transaction");
+const { User } = require("../../models/user");
 
 const { createError } = require("../../helpers");
 const { authorize } = require("../../middlewares");
@@ -33,17 +34,27 @@ router.get("/", authorize, async (req, res, next) => {
 // get transaction by id
 
 // create new transaction
+
 router.post("/", authorize, async (req, res, next) => {
   try {
-    const { _id: owner } = req.user;
+    const { _id, totalBalance } = req.user;
+    const { type, sum } = req.body;
     const { error } = transactionSchema.validate(req.body);
-
     if (error) {
       throw createError(400, error.message);
     }
 
-    const result = await Transaction.create({ ...req.body, owner });
-    res.status(201).json(result);
+    const result = await Transaction.create({ ...req.body, owner: _id });
+
+    let updateBalance = +totalBalance;
+    type === "income" ? (updateBalance += +sum) : (updateBalance -= +sum);
+
+    const updatedUser = await User.findByIdAndUpdate(
+      { _id },
+      { totalBalance: updateBalance }
+    );
+
+    res.status(201).json({ result, totalBalance: updatedUser.totalBalance });
   } catch (error) {
     next(error);
   }
@@ -57,6 +68,7 @@ router.delete("/:transactionId", async (req, res, next) => {
     if (!result) {
       throw createError(404, "Not Found");
     }
+
     res.json({ message: "Transaction Deleted" });
   } catch (error) {
     next(error);
