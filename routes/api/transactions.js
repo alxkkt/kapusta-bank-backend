@@ -1,6 +1,6 @@
 const express = require("express");
 const Joi = require("joi");
-
+const transactionsSumByDate = require("../../controllers/transactions/transactionsSumByDate");
 const router = express.Router();
 
 const Transaction = require("../../models/transaction");
@@ -74,5 +74,5 @@ router.delete("/:transactionId", async (req, res, next) => {
     next(error);
   }
 });
-
+router.get("/total/:month/:year", authorize, transactionsSumByDate);
 module.exports = router;
