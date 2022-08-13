@@ -20,6 +20,9 @@ const transactionSchema = Schema(
         "sports, hobbies",
         "education",
         "other",
+        "wages",
+        "dividents",
+        "income",
       ],
     },
     sum: {
