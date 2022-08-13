@@ -8,10 +8,7 @@ const { createError } = require("../../helpers");
 const router = express.Router();
 
 const Category = require("../../models/category");
-const Transaction = require("../../models/transaction");
 const { User } = require("../../models/user");
-
-const categorySumByDate = require("../../controllers/categories/categorySumByDate");
 
 const categorySchema = Joi.object({
   name: Joi.string().required(),
@@ -52,5 +49,5 @@ router.get("/", authorize, async (req, res, next) => {
     next(error);
   }
 });
-router.get("/total/:month/:year", authorize, categorySumByDate);
+
 module.exports = router;
