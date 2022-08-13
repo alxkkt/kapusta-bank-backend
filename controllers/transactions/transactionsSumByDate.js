@@ -17,7 +17,7 @@ const categorySumByDate = async (req, res, next) => {
     const transactionsByMonthAndYear = transactions.filter(({ date }) => {
       return (
         date.getFullYear().toString() === year &&
-        date.getMonth().toString() === `${month - 1}`
+        date.getMonth().toString() === `${month}`
       );
     });
     const incomeTransactions = transactionsByMonthAndYear.filter(
