@@ -32,7 +32,7 @@ router.post("/login", validateBody(schemas.logIn), ctrlWrapper(ctrl.login));
 
 // user logout route
 
-router.get("/logout", authorize, ctrlWrapper(ctrl.logOut));
+router.post("/logout", authorize, ctrlWrapper(ctrl.logOut));
 
 // route user get session info by token
 
