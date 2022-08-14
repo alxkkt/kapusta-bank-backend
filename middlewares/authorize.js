@@ -23,7 +23,7 @@ const authorize = async (req, res, next) => {
       req.user = user;
       next();
     } catch (error) {
-      throw createError(401, `Not authorize ${error.message}`);
+      throw createError(401, `Error message: ${error.message}`);
     }
   } catch (error) {
     next(error);
