@@ -16,7 +16,6 @@ router.post(
 );
 
 // user verify by email route
-
 router.get("/verify/:verificationToken", ctrlWrapper(ctrl.emailVerify));
 
 // user resend verification email route
@@ -27,24 +26,12 @@ router.post(
 );
 
 // user login route
-
 router.post("/login", validateBody(schemas.logIn), ctrlWrapper(ctrl.login));
 
 // user logout route
-
 router.post("/logout", authorize, ctrlWrapper(ctrl.logOut));
 
 // route user get session info by token
-
 router.get("/current", authorize, ctrlWrapper(ctrl.current));
-
-router.patch(
-  "/balance",
-  authorize,
-  validateBody(schemas.balance),
-  ctrlWrapper(ctrl.balanceUpdate)
-);
-
-router.get("/balance", authorize, ctrlWrapper(ctrl.balanceGet));
 
 module.exports = router;

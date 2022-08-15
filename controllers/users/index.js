@@ -4,8 +4,6 @@ const reverify = require("./reverify");
 const login = require("./login");
 const logOut = require("./logOut");
 const current = require("./current");
-const balanceUpdate = require("./balanceUpdate");
-const balanceGet = require("./balanceGet");
 
 module.exports = {
   register,
@@ -14,6 +12,4 @@ module.exports = {
   login,
   logOut,
   current,
-  balanceUpdate,
-  balanceGet,
 };
