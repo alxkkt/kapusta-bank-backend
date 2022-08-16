@@ -3,7 +3,7 @@ const express = require("express");
 const ctrl = require("../../controllers/users");
 const { schemas } = require("../../models/user");
 const { ctrlWrapper } = require("../../helpers");
-const { validateBody, authorize } = require("../../middlewares");
+const { validateBody, authorize, isValidId } = require("../../middlewares");
 
 const router = express.Router();
 
@@ -24,6 +24,8 @@ router.post(
   validateBody(schemas.verification),
   ctrlWrapper(ctrl.reverify)
 );
+
+router.post("/google", ctrlWrapper(ctrl.googleAuth));
 
 // user login route
 router.post("/login", validateBody(schemas.logIn), ctrlWrapper(ctrl.login));
