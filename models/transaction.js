@@ -11,6 +11,7 @@ const transactionSchema = Schema(
       required: true,
       enum: [
         "transport",
+        "products",
         "health",
         "alcohol",
         "entertainment",
@@ -21,7 +22,6 @@ const transactionSchema = Schema(
         "education",
         "other",
         "wages",
-        "dividents",
         "income",
       ],
     },
