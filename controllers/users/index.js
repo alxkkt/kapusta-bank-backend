@@ -4,6 +4,7 @@ const reverify = require("./reverify");
 const login = require("./login");
 const logOut = require("./logOut");
 const current = require("./current");
+const googleAuth = require("./googleAuth");
 
 module.exports = {
   register,
@@ -12,4 +13,5 @@ module.exports = {
   login,
   logOut,
   current,
+  googleAuth,
 };
