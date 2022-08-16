@@ -1,6 +1,6 @@
 const { User } = require("../../models/user");
 
-const { createError } = require("../../helpers");
+const { createError, verifyMarkup } = require("../../helpers");
 
 const emailVerify = async (req, res, next) => {
   const { verificationToken } = req.params;
@@ -13,7 +13,9 @@ const emailVerify = async (req, res, next) => {
     verify: true,
   });
 
-  res.json({ message: "User verified" });
+  const html = verifyMarkup(user.email);
+
+  res.send(html);
 };
 
 module.exports = emailVerify;
