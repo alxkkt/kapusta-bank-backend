@@ -3,7 +3,7 @@ const bcrypt = require("bcryptjs");
 
 const { nanoid } = require("nanoid");
 
-const { createError, sendMail } = require("../../helpers");
+const { createError, sendMail, emailMarkup } = require("../../helpers");
 
 const register = async (req, res, next) => {
   const { email, password } = req.body;
@@ -21,13 +21,15 @@ const register = async (req, res, next) => {
     verificationToken,
   });
 
+  const html = emailMarkup({ email, verificationToken });
   const mail = {
     to: email,
     subject: "Verify your account",
-    html: `<a target='_blank' href='https://kapusta-backend-proj.herokuapp.com/api/auth/verify/${verificationToken}'>Click here to verify your account</a>`,
+
+    html,
   };
   await sendMail(mail);
-  res.status(201).json(result.mail);
+  res.status(201).json(result.email);
 };
 
 module.exports = register;
