@@ -34,7 +34,6 @@ router.get("/", authorize, async (req, res, next) => {
 // get transaction by id
 
 // create new transaction
-
 router.post("/", authorize, async (req, res, next) => {
   try {
     const { _id, totalBalance } = req.user;
@@ -75,4 +74,5 @@ router.delete("/:transactionId", async (req, res, next) => {
   }
 });
 router.get("/total/:month/:year", authorize, transactionsSumByDate);
+
 module.exports = router;
