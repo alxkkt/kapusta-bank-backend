@@ -38,6 +38,7 @@ router.post("/", authorize, async (req, res, next) => {
   try {
     const { _id, totalBalance } = req.user;
     const { type, sum } = req.body;
+
     const { error } = transactionSchema.validate(req.body);
     if (error) {
       throw createError(400, error.message);
@@ -45,15 +46,31 @@ router.post("/", authorize, async (req, res, next) => {
 
     const result = await Transaction.create({ ...req.body, owner: _id });
 
-    let updateBalance = +totalBalance;
-    type === "income" ? (updateBalance += +sum) : (updateBalance -= +sum);
+    const newBalance =
+      type === "income" ? totalBalance + sum : totalBalance - sum;
 
-    const updatedUser = await User.findByIdAndUpdate(
-      { _id },
-      { totalBalance: updateBalance }
-    );
+    await User.findByIdAndUpdate(_id, { totalBalance: newBalance });
 
-    res.status(201).json({ result, totalBalance: updatedUser.totalBalance });
+    res.status(201).json({
+      result,
+      totalBalance: newBalance,
+    });
+
+    // if (type === "income") {
+    //   await User.findByIdAndUpdate(
+    //     { _id },
+    //     { totalBalance: totalBalance + sum }
+    //   );
+
+    //   res.status(201).json({ result, totalBalance: newBalance });
+    // } else {
+    //   await User.findByIdAndUpdate(
+    //     { _id },
+    //     { totalBalance: totalBalance - sum }
+    //   );
+
+    //   res.status(201).json({ result, totalBalance: newBalance });
+    // }
   } catch (error) {
     next(error);
   }

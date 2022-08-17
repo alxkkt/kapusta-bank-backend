@@ -17,7 +17,7 @@
     "cross-env": "7.0.3",
     "dotenv": "^16.0.1",
     "express": "4.17.1",
-    "google-auth-library": "^8.1.1",
+    "google-auth-library": "^8.2.0",
     "gravatar": "^1.8.2",
     "jimp": "^0.16.1",
     "joi": "^17.6.0",
