@@ -3,6 +3,7 @@ const sendMail = require("./sendMail");
 const ctrlWrapper = require("./ctrlWrapper");
 const emailMarkup = require("./emailMarkup");
 const verifyMarkup = require("./verifyMarkup");
+const getSummary = require("./getSummary");
 
 module.exports = {
   createError,
@@ -10,4 +11,5 @@ module.exports = {
   ctrlWrapper,
   emailMarkup,
   verifyMarkup,
+  getSummary,
 };

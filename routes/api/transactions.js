@@ -6,7 +6,7 @@ const router = express.Router();
 const Transaction = require("../../models/transaction");
 const { User } = require("../../models/user");
 
-const { createError } = require("../../helpers");
+const { createError, getSummary } = require("../../helpers");
 const { authorize } = require("../../middlewares");
 
 const transactionSchema = Joi.object({
@@ -82,6 +82,24 @@ router.delete("/:transactionId", authorize, async (req, res, next) => {
     next(error);
   }
 });
+
+// by month / year
 router.get("/total/:month/:year", authorize, transactionsSumByDate);
+
+// get summary
+router.get("/summary/:type", authorize, async (req, res, next) => {
+  try {
+    const { _id: owner } = req.user;
+    const { type } = req.params;
+
+    const result = await Transaction.find({ owner }, "-createdAt -updatedAt");
+
+    const summary = getSummary(type, result);
+
+    res.json(summary);
+  } catch (error) {
+    next(error);
+  }
+});
 
 module.exports = router;
