@@ -31,8 +31,6 @@ router.get("/", authorize, async (req, res, next) => {
   }
 });
 
-// get transaction by id
-
 // create new transaction
 router.post("/", authorize, async (req, res, next) => {
   try {
@@ -55,37 +53,31 @@ router.post("/", authorize, async (req, res, next) => {
       result,
       totalBalance: newBalance,
     });
-
-    // if (type === "income") {
-    //   await User.findByIdAndUpdate(
-    //     { _id },
-    //     { totalBalance: totalBalance + sum }
-    //   );
-
-    //   res.status(201).json({ result, totalBalance: newBalance });
-    // } else {
-    //   await User.findByIdAndUpdate(
-    //     { _id },
-    //     { totalBalance: totalBalance - sum }
-    //   );
-
-    //   res.status(201).json({ result, totalBalance: newBalance });
-    // }
   } catch (error) {
     next(error);
   }
 });
 
 // delete transaction by id
-router.delete("/:transactionId", async (req, res, next) => {
+router.delete("/:transactionId", authorize, async (req, res, next) => {
   try {
     const { transactionId } = req.params;
-    const result = await Transaction.findByIdAndRemove(transactionId);
-    if (!result) {
+    const { _id, totalBalance } = req.user;
+
+    const { type, sum } = await Transaction.findByIdAndRemove(transactionId);
+    if (!sum) {
       throw createError(404, "Not Found");
     }
 
-    res.json({ message: "Transaction Deleted" });
+    const newBalance =
+      type === "income" ? totalBalance - sum : totalBalance + sum;
+
+    await User.findByIdAndUpdate({ _id }, { totalBalance: newBalance });
+
+    res.json({
+      message: "Transaction Deleted",
+      newBalance,
+    });
   } catch (error) {
     next(error);
   }
