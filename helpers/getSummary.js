@@ -1,3 +1,5 @@
+const ObjectID = require("bson-objectid");
+
 const getSummary = (type, array) => {
   const typedResult = array.filter((item) => item.type === type);
 
@@ -22,7 +24,7 @@ const getSummary = (type, array) => {
       const monthlyTrans = getByMonth(arr, i);
       sum = countMonthSum(monthlyTrans);
 
-      finalArr.push({ month: i, totalSum: sum });
+      finalArr.push({ id: ObjectID(), month: i, totalSum: sum });
     }
 
     return finalArr;
