@@ -26,7 +26,7 @@ const googleAuth = async (req, res, next) => {
   }
 
   const user = await User.findOne({ email });
-  console.log(user);
+  
   if (!user) {
     const password = `${nanoid()}.${SECRET_KEY}`;
 

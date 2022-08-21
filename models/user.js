@@ -20,7 +20,7 @@ const userSchema = Schema(
       type: String,
       default: null,
     },
-    // required for email verify //! PLZ do not comment this field {*}
+
     verify: {
       type: Boolean,
       default: false,
