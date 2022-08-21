@@ -143,7 +143,7 @@ const verifyMarkup = (email) => {
         alt="congratulation, verification confirmed"
         style="display: block"
       />
-      <a href="https://alxkkt.github.io/kapusta-bank-client/auth" class="link">
+      <a href="https://kapusta-bank-client.vercel.app/auth" class="link">
         Log In
       </a>
     </div>

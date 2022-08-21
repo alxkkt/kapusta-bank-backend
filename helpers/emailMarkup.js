@@ -358,7 +358,7 @@ const emailMarkup = ({ email, verificationToken }) => {
                                           <td>
                                             <a
                                               target="_new"
-                                              href="https://alxkkt.github.io/kapusta-bank-client/"
+                                              href="https://kapusta-bank-client.vercel.app/auth"
                                               ><img
                                                 width="500"
                                                 border="0"
@@ -471,7 +471,7 @@ const emailMarkup = ({ email, verificationToken }) => {
                                   >
                                     <p><br /><br /></p>
                                     <p>
-                                      You registered an account on our financial portal <a href='https://alxkkt.github.io/kapusta-bank-client/'> Kapusta, before being able to use your
+                                      You registered an account on our financial portal <a href='https://kapusta-bank-client.vercel.app/auth'> Kapu$ta, before being able to use your
                                       account you need to verify that this is
                                       your email address by clicking the button
                                       below
